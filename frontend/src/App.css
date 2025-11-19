@@ -1,0 +1,18 @@
+/* Additional custom styles if needed */
+
+/* Placeholder for contentEditable div */
+[contenteditable][placeholder]:empty:before {
+  content: attr(placeholder);
+  color: #9ca3af;
+  cursor: text;
+}
+
+[contenteditable]:focus {
+  outline: none;
+}
+
+/* Ensure proper formatting display */
+[contenteditable] {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
