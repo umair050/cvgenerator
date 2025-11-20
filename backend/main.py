@@ -261,11 +261,68 @@ async def parse_cv(file: UploadFile = File(...)):
    
    IMPORTANT: Be comprehensive and thorough in extraction - aim for 5-8 technical skill categories with multiple skills per category.
 
-2. Summary - Professional summary/objective (one comprehensive paragraph). MUST start with "I am" and be written in first person, as if the person is presenting themselves. The summary should be a single, well-structured paragraph covering: years of experience and specialization, technical expertise and modules worked with, industries served, key achievements and project types, business process expertise, and value delivered. Example format: "I am a highly motivated and results-driven [role] with [X] years of extensive experience in [areas]. Throughout my career, I have worked across diverse industries including [industries], where I have successfully delivered [achievements]. I specialize in [specializations]. My professional expertise extends to [expertise areas]. I take pride in [value proposition]. With a proven track record of [track record], I am deeply committed to [commitment]."
+2. Summary - Professional summary/objective (ONE LONG comprehensive paragraph of 150-250 words or 8-15 sentences). MUST start with "I am" and be written in first person, as if the person is presenting themselves. 
 
-3. Industry Experience - Extract ALL industries/sectors worked in or mentioned in the CV. Be comprehensive - look for industry mentions in work experience, projects, company names, and context. Aim to identify at least 10-15 different industries or sectors. Include both specific industries (e.g., "Pharmaceuticals", "Textiles") and broader sectors (e.g., "Manufacturing", "Healthcare"). Consider industries from all work experiences and projects mentioned.
+   CRITICAL LENGTH REQUIREMENT: The summary MUST be LONG and DETAILED (minimum 150 words, ideally 200-250 words). Create a comprehensive narrative that fully captures the professional's profile.
+   
+   The summary should be a single, well-structured, LENGTHY paragraph covering ALL of these elements in detail:
+   - Years of experience and specific role/specialization (be specific about the number of years)
+   - Core technical expertise, systems, modules, and technologies worked with (list multiple, be comprehensive)
+   - Industries and sectors served throughout career (mention 5-8 industries)
+   - Key achievements, project types, and implementations (provide specific examples)
+   - Business process expertise and domain knowledge (explain depth and breadth)
+   - Methodologies and approaches used (e.g., Agile, SAP Activate, etc.)
+   - Leadership and collaboration experience (team sizes, stakeholder management)
+   - Value delivered to organizations (efficiency, cost savings, quality improvements)
+   - Professional qualities and soft skills demonstrated
+   - Commitment to continuous learning and professional growth
+   
+   Example format (note the length and detail): "I am a highly motivated and results-driven [specific role] with [X] years of extensive hands-on experience in [specific technical areas, systems, and modules]. Throughout my professional journey, I have successfully delivered [number] of complex projects across diverse industries including [industry 1], [industry 2], [industry 3], [industry 4], [industry 5], and [industry 6], where I have consistently demonstrated my ability to [specific achievements with metrics]. I specialize in [specific specialization 1], [specialization 2], and [specialization 3], with deep expertise in [technical skills and tools]. My professional expertise extends to [additional expertise areas] and I am proficient in [methodologies/frameworks]. I have led and collaborated with cross-functional teams of [size/composition], working closely with [stakeholders] to ensure alignment between business requirements and technical solutions. I take pride in my ability to [specific value proposition - e.g., optimize processes, reduce costs, improve quality, accelerate delivery], having achieved [specific measurable results] in previous roles. With a proven track record of successfully implementing [types of implementations], managing [aspects managed], and delivering [types of deliverables], I bring a unique combination of technical depth and business acumen. I am deeply committed to [commitment - e.g., continuous improvement, staying current with emerging technologies, mentoring teams, driving digital transformation] and strive to [professional goals and impact]."
 
-4. Functional Skills - Extract ALL soft skills, management skills, leadership skills, interpersonal skills, and professional competencies mentioned or demonstrated in the CV. Be thorough and comprehensive. Look for skills in responsibilities, achievements, descriptions, and implied from activities. Aim to identify at least 15-20 functional skills. Include skills like: Project Management, Stakeholder Management, Communication, Problem Solving, Team Leadership, Analytical Thinking, Strategic Planning, Change Management, Conflict Resolution, Time Management, Training & Mentoring, Business Analysis, Requirements Gathering, Documentation, Quality Assurance, Process Improvement, Negotiation, Decision Making, etc.
+3. Functional Skills - Extract ALL soft skills, management skills, leadership skills, interpersonal skills, and professional competencies mentioned or demonstrated in the CV. Be thorough and comprehensive. Look for skills in responsibilities, achievements, descriptions, and implied from activities. Aim to identify at least 15-20 functional skills.
+   
+   CRITICAL GROUPING RULES:
+   - GROUP related or complementary skills together using " & " (space-ampersand-space)
+   - Combine skills that are typically related or naturally go together
+   - Each line should contain either a single skill OR a group of 2-3 related skills
+   
+   Examples of proper grouping:
+   - "Project Management & Planning" (not separate "Project Management", "Planning")
+   - "Stakeholder Management & Communication" (not separate entries)
+   - "Business Process Analysis & Re-engineering" (not separate entries)
+   - "Change Management & Implementation" (not separate entries)
+   - "Team Leadership & Mentoring" (not separate "Team Leadership", "Mentoring")
+   - "Problem Solving & Troubleshooting" (not separate entries)
+   - "Strategic Planning & Execution" (not separate entries)
+   - "Requirements Gathering & Documentation" (not separate entries)
+   - "Training & Knowledge Transfer" (not separate entries)
+   - "Quality Assurance & Compliance" (not separate entries)
+   - "Time Management & Prioritization" (not separate entries)
+   - "Conflict Resolution & Negotiation" (not separate entries)
+   - "Analytical Thinking & Decision Making" (not separate entries)
+   - "Continuous Improvement & Innovation" (not separate entries)
+   
+   ONLY create separate entries if skills are NOT related or complementary.
+
+4. Industry Experience - Extract ALL industries/sectors worked in or mentioned in the CV. Be comprehensive - look for industry mentions in work experience, projects, company names, and context. Aim to identify at least 10-15 different industries or sectors.
+   
+   CRITICAL GROUPING RULES:
+   - GROUP related or complementary industries together using " & " (space-ampersand-space)
+   - Combine industries that are typically related or often work together
+   - Each line should contain either a single industry OR a group of 2-3 related industries
+   
+   Examples of proper grouping:
+   - "Banking & Financial Services" (not separate "Banking", "Financial Services")
+   - "Pharmaceuticals & Healthcare" (not separate "Pharmaceuticals", "Healthcare")
+   - "Textiles & Manufacturing" (not separate "Textiles", "Manufacturing")
+   - "Food & Beverage" (not separate "Food", "Beverage")
+   - "Rubber & Tyre" (not separate "Rubber", "Tyre")
+   - "Defense & Government" (not separate "Defense", "Government")
+   - "Data Warehousing & Data Integration" (not separate entries)
+   - "Logistics & Supply Chain" (not separate "Logistics", "Supply Chain")
+   - "Chemicals & Process Industry" (not separate "Chemicals", "Process Industry")
+   
+   ONLY create separate entries if industries are NOT related or complementary.
 5. Certification & Trainings - All certifications, licenses, training programs
 6. Education - Extract ONLY THE MOST RECENT/HIGHEST educational qualification. Do NOT include all education entries, only the last one (most recent degree or highest level).
    - Format: "Degree Name | Institution Name | Year" (if year available)
@@ -291,20 +348,40 @@ CRITICAL FORMATTING RULES:
 - Each responsibility MUST be on its own separate line with "- " prefix
 - Technologies should ONLY be listed as a separate final line containing tools, software, platforms
 
-- Key responsibilities and achievements (as bullet points starting with "- ")
-  CRITICAL: Each responsibility should be DETAILED, EXPLANATORY, and LENGTHY. Write comprehensive descriptions that explain:
-  * What was done (specific actions and tasks)
-  * How it was done (methodologies, tools, approaches)
-  * Why it was done (business context and objectives)
-  * Results and impact (outcomes, improvements, achievements)
-  * Technical details and implementations
-  * Collaboration and team interactions
-  * Process improvements and optimizations
+- Key responsibilities and achievements (8-15 bullet points per role, focus on long, detailed explanations)
   
-  Each bullet point should be a complete, well-explained sentence or multiple sentences (2-4 sentences per bullet point is ideal). Avoid short, one-line descriptions. Be descriptive and provide context.
+  OPTIONAL BUT RECOMMENDED: If there are many responsibilities (8+ bullet points), categorize them into logical groups. Use category headers like:
+  * "ETL Development:" / "Development & Implementation:"
+  * "Project Management & Delivery:" / "Project Leadership:"
+  * "Collaboration & Requirements Analysis:" / "Stakeholder Engagement:"
+  * "Quality Assurance:" / "Testing & Validation:"
+  * "Technical Leadership:" / "System Administration:"
+  * "Support & Maintenance:" / "Production Support:"
   
-  Example of GOOD detailed description:
-  - "Managed end-to-end project lifecycle, ensuring successful execution and delivery of technical initiatives within diverse industries. Gathered and analyzed project requirements, collaborating closely with stakeholders to define project scope, objectives, and deliverables. Implemented and maintained quality assurance processes to ensure project deliverables meet established standards."
+  Example WITH categories:
+  ETL Development:
+  - Enhanced data integration by designing and developing efficient ETL processes using Informatica PowerCenter, enabling seamless data flow from multiple source systems to target data warehouses and ensuring data consistency across the enterprise.
+  - Developed complex mappings, workflows, and sessions to meet project objectives and deadlines, incorporating error handling mechanisms and transformation logic to maintain data quality and integrity.
+  
+  Project Management & Delivery:
+  - Successfully migrated legacy ETL processes to Informatica PowerCenter, resulting in increased efficiency and reduced maintenance effort, while ensuring zero data loss and minimal downtime.
+  
+  Example WITHOUT categories (also acceptable):
+  - Enhanced data integration by designing and developing efficient ETL processes using Informatica PowerCenter, enabling seamless data flow from multiple source systems to target data warehouses.
+  - Developed complex mappings, workflows, and sessions to meet project objectives and deadlines, incorporating error handling mechanisms.
+  
+  CRITICAL: Each responsibility should be VERY DETAILED, EXPLANATORY, and EXTREMELY LENGTHY. Write comprehensive, thorough descriptions that explain:
+  * What was done (specific actions and tasks with concrete, detailed examples)
+  * How it was done (methodologies, tools, approaches, processes, and step-by-step details)
+  * Why it was done (business context, objectives, requirements, and business value)
+  * Results and impact (outcomes, improvements, achievements, metrics, and quantifiable results)
+  * Technical details and implementations (specific technologies, configurations, architectures, solutions)
+  * Collaboration and team interactions (stakeholders, cross-functional work, team dynamics)
+  * Process improvements and optimizations (efficiency gains, quality improvements, innovations)
+  * Challenges faced and solutions implemented (problem-solving approaches)
+  * Scale and scope (data volumes, system sizes, user counts, complexity levels)
+  
+  CRITICAL LENGTH REQUIREMENT: Each bullet point MUST be 4-8 sentences (60-120 words). Make them substantive, detailed, and comprehensive. Write as if explaining the work to someone who needs to fully understand the scope, complexity, and impact. Include specific examples, metrics, and technical details whenever possible. Avoid short, one-line descriptions. Be EXTREMELY descriptive and provide COMPLETE context with all relevant details.
   
   Example of WRONG format (DO NOT DO THIS):
   INFORMATICA ADMINISTRATOR – CES LTD | 06/2023 – PRESENT
@@ -319,10 +396,24 @@ IMPORTANT:
 
 Format each position as:
 Position Title / Company Name | MM/YYYY – MM/YYYY | Location (only if present)
-- Responsibility 1 (detailed, 2-4 sentences)
-- Responsibility 2 (detailed, 2-4 sentences)
-- Responsibility 3 (detailed, 2-4 sentences)
-- Responsibility 4 (detailed, 2-4 sentences)
+
+Option A - WITH category headers (recommended for 8+ responsibilities):
+Category Name 1:
+- Responsibility 1 (VERY DETAILED, 4-8 sentences, 60-120 words with specific examples, metrics, and technical details)
+- Responsibility 2 (VERY DETAILED, 4-8 sentences, 60-120 words with specific examples, metrics, and technical details)
+- Responsibility 3 (VERY DETAILED, 4-8 sentences, 60-120 words with specific examples, metrics, and technical details)
+
+Category Name 2:
+- Responsibility 4 (VERY DETAILED, 4-8 sentences, 60-120 words with specific examples, metrics, and technical details)
+- Responsibility 5 (VERY DETAILED, 4-8 sentences, 60-120 words with specific examples, metrics, and technical details)
+
+Technologies: Tech1, Tech2, Tech3
+
+Option B - WITHOUT categories (acceptable for fewer responsibilities):
+- Responsibility 1 (VERY DETAILED, 4-8 sentences, 60-120 words with specific examples, metrics, and technical details)
+- Responsibility 2 (VERY DETAILED, 4-8 sentences, 60-120 words with specific examples, metrics, and technical details)
+- Responsibility 3 (VERY DETAILED, 4-8 sentences, 60-120 words with specific examples, metrics, and technical details)
+- Responsibility 4 (VERY DETAILED, 4-8 sentences, 60-120 words with specific examples, metrics, and technical details)
 Technologies: Tech1, Tech2, Tech3
 
 [Separate each position with a blank line]
@@ -336,10 +427,10 @@ TECHNICAL_SKILLS:
 SUMMARY:
 [content here]
 
-INDUSTRY_EXPERIENCE:
+FUNCTIONAL_SKILLS:
 [content here]
 
-FUNCTIONAL_SKILLS:
+INDUSTRY_EXPERIENCE:
 [content here]
 
 CERTIFICATIONS:
@@ -452,11 +543,11 @@ async def improve_text(request: ImproveTextRequest):
         # Create specific instructions based on section type
         section_instructions = {
             "technical_skills": "Extract and list ALL technical skills, tools, technologies, and platforms mentioned. Be comprehensive and thorough - extract every technology, tool, software, and platform. ALWAYS group them into logical categories - NEVER list skills without categories. ONLY create categories when there are ACTUAL skills to list. DO NOT create empty categories with 'None mentioned'. Format as 'Category Name: skill1, skill2, skill3' (one category per line, skills comma-separated). Create meaningful categories based on skill types (e.g., ERP Systems, Cloud & Infrastructure, DevOps & CI/CD Tools, Databases, Data Integration Tools, Programming & Scripting, Operating Systems, Monitoring Tools, etc.). Each category should have 2-10 related skills (minimum 2 per category). Skip categories that have no skills. Aim to create at least 5-8 skill categories.",
-            "industry_experience": "Extract and list ALL industries and sectors worked in or mentioned. Be comprehensive - look for industry mentions in work experience, projects, and context. Return one industry per line in simple format (no markdown). Aim to identify at least 10-15 different industries or sectors. Include both specific industries (e.g., 'Pharmaceuticals', 'Textiles') and broader sectors (e.g., 'Manufacturing', 'Healthcare').",
-            "functional_skills": "Extract and list ALL soft skills, management skills, leadership skills, interpersonal skills, and professional competencies mentioned or demonstrated. Be thorough and comprehensive - look for skills in responsibilities, achievements, and descriptions. Return one skill per line in simple format (no categories, no markdown). Aim to identify at least 15-20 functional skills. Include skills like: Project Management, Stakeholder Management, Communication, Problem Solving, Team Leadership, Analytical Thinking, Strategic Planning, Change Management, etc.",
+            "industry_experience": "Extract and list ALL industries and sectors worked in or mentioned. Be comprehensive - look for industry mentions in work experience, projects, and context. CRITICAL GROUPING: GROUP related or complementary industries together using ' & ' (space-ampersand-space). Combine industries that are typically related. Examples: 'Banking & Financial Services', 'Pharmaceuticals & Healthcare', 'Textiles & Manufacturing', 'Food & Beverage', 'Logistics & Supply Chain', 'Defense & Government'. Return one industry/group per line in simple format (no markdown). Aim to identify at least 10-15 different industries or sectors.",
+            "functional_skills": "Extract and list ALL soft skills, management skills, leadership skills, interpersonal skills, and professional competencies mentioned or demonstrated. Be thorough and comprehensive - look for skills in responsibilities, achievements, and descriptions. CRITICAL GROUPING: GROUP related or complementary skills together using ' & ' (space-ampersand-space). Combine skills that naturally go together. Examples: 'Project Management & Planning', 'Stakeholder Management & Communication', 'Business Process Analysis & Re-engineering', 'Change Management & Implementation', 'Team Leadership & Mentoring', 'Problem Solving & Troubleshooting', 'Strategic Planning & Execution', 'Requirements Gathering & Documentation', 'Training & Knowledge Transfer', 'Quality Assurance & Compliance'. Return one skill/group per line in simple format (no categories, no markdown). Aim to identify at least 15-20 functional skills.",
             "certifications": "Extract and list all certifications, licenses, and training programs. Return one certification per line in simple format (no markdown).",
             "education": "Extract and format ONLY THE MOST RECENT/HIGHEST educational qualification. Do NOT include all education entries, only the last one (most recent degree or highest level). Format as 'Degree Name | Institution Name | Year' (if year available) or 'Degree Name | Institution Name'. Include full degree name and institution name. Return only ONE entry.",
-            "summary": "Write ONE comprehensive professional paragraph in FIRST PERSON, starting with 'I am'. Write as if the person is presenting themselves. The paragraph should cover: years of experience and specialization, technical expertise and modules/technologies, industries served, key achievements and project types, business process expertise, and value delivered. Example: 'I am a highly motivated and results-driven [role] with [X] years of extensive experience in [areas]. Throughout my career, I have worked across diverse industries including [industries], where I have successfully delivered [achievements]. I specialize in [specializations]. My professional expertise extends to [expertise]. I take pride in [value]. With a proven track record of [track record], I am deeply committed to [commitment].' Use plain text, no markdown or formatting."
+            "summary": "Write ONE LONG comprehensive professional paragraph in FIRST PERSON, starting with 'I am'. Write as if the person is presenting themselves. CRITICAL: The summary MUST be LONG and DETAILED - minimum 150 words, ideally 200-250 words (8-15 sentences). Create a comprehensive narrative covering: years of experience (specific number) and specialization, core technical expertise and all systems/modules/technologies worked with (be comprehensive - list many), industries and sectors served (mention 5-8), key achievements and project types with examples, business process expertise and domain knowledge, methodologies used (Agile, SAP Activate, etc.), leadership and team collaboration, value delivered with metrics, professional qualities, and commitment to growth. Write a single flowing paragraph that fully captures the professional profile. Use plain text, no markdown or formatting. Make it substantive and detailed - this is the most important section."
         }
         
         instruction = section_instructions.get(
@@ -584,11 +675,11 @@ async def generate_cv_from_sections(
 Technical Skills:
 {format_technical_skills(sections.technical_skills)}
 
-Industry Experience:
-{format_bullet_list(sections.industry_experience)}
-
 Functional Skills:
 {format_bullet_list(sections.functional_skills)}
+
+Industry Experience:
+{format_bullet_list(sections.industry_experience)}
 [LEFT_COLUMN_END]
 
 [RIGHT_COLUMN_START]
@@ -677,11 +768,11 @@ async def preview_cv(sections: CVSections, format_type: str = Query(default="dat
 Technical Skills:
 {format_technical_skills(sections.technical_skills)}
 
-Industry Experience:
-{format_bullet_list(sections.industry_experience)}
-
 Functional Skills:
 {format_bullet_list(sections.functional_skills)}
+
+Industry Experience:
+{format_bullet_list(sections.industry_experience)}
 [LEFT_COLUMN_END]
 
 [RIGHT_COLUMN_START]

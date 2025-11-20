@@ -1,6 +1,6 @@
 from docx import Document
 from docx.shared import Pt, Inches, RGBColor
-from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_LINE_SPACING
 from docx.enum.table import WD_ALIGN_VERTICAL
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
@@ -25,7 +25,7 @@ class CVGenerator:
         }
         # Datamatics logo - try local file first, then URL
         self.logo_path = os.path.join(os.path.dirname(__file__), "..", "assets", "logo.png")
-        self.logo_url = "https://datamaticstechnologies.com/wp-content/uploads/2024/09/Datamatics-Technologies.png"
+        self.logo_url = "https://datamaticstechnologies.com/wp-content/uploads/2025/09/Default-Logo-Final-for-Black-Background-2-scaled-150x45.png"
     
     async def generate_docx(self, cv_text: str, output_path: str, format_type: str = "modern"):
         """
@@ -47,7 +47,7 @@ class CVGenerator:
         # Set page margins with more spacing on left and right
         sections = doc.sections
         for section in sections:
-            section.top_margin = Inches(0.4)
+            section.top_margin = Inches(1.0)  # Increased to accommodate header
             section.bottom_margin = Inches(0.4)
             section.left_margin = Inches(0.90)  # Increased left margin
             section.right_margin = Inches(0.90)  # Increased right margin
@@ -61,81 +61,8 @@ class CVGenerator:
         # Parse structured content
         content = self._parse_datamatics_content(cv_text)
         
-        # Header table: Name/Designation on left, Logo on right
-        header_table = doc.add_table(rows=1, cols=2)
-        header_table.style = None
-        
-        # Set column widths for header
-        header_table.columns[0].width = Inches(4.5)  # Left: Name/Designation
-        header_table.columns[1].width = Inches(2.5)  # Right: Logo
-        
-        # Remove borders from header table
-        for row in header_table.rows:
-            for cell in row.cells:
-                tc = cell._tc
-                tcPr = tc.get_or_add_tcPr()
-                tcBorders = OxmlElement('w:tcBorders')
-                for border_name in ['top', 'left', 'bottom', 'right', 'insideH', 'insideV']:
-                    border = OxmlElement(f'w:{border_name}')
-                    border.set(qn('w:val'), 'nil')
-                    tcBorders.append(border)
-                tcPr.append(tcBorders)
-        
-        # Left cell: Name and Designation
-        left_header_cell = header_table.rows[0].cells[0]
-        if content.get('header'):
-            header_text = content['header']
-            # Parse "Name | Designation" format
-            if '|' in header_text:
-                parts = [p.strip() for p in header_text.split('|')]
-                name = parts[0] if parts else ""
-                designation = parts[1] if len(parts) > 1 else ""
-            else:
-                name = header_text
-                designation = ""
-            
-            # Name - match PDF: larger, bold, Calibri
-            if name:
-                name_p = left_header_cell.add_paragraph()
-                name_run = name_p.add_run(name)
-                name_run.font.size = Pt(10)  # Header font size set to 10pt
-                name_run.font.bold = True
-                name_run.font.name = 'Calibri'
-                name_p.paragraph_format.space_before = Pt(0)
-                name_p.paragraph_format.space_after = Pt(2)  # Tighter spacing
-            
-            # Designation - header font size 10pt
-            if designation:
-                design_p = left_header_cell.add_paragraph()
-                design_run = design_p.add_run(designation)
-                design_run.font.size = Pt(10)  # Header font size set to 10pt
-                design_run.font.bold = True
-                design_run.font.name = 'Calibri'
-                design_p.paragraph_format.space_before = Pt(0)
-                design_p.paragraph_format.space_after = Pt(0)
-        
-        # Right cell: Logo
-        right_header_cell = header_table.rows[0].cells[1]
-        right_header_cell.vertical_alignment = WD_ALIGN_VERTICAL.TOP
-        
-        # Download and add logo
-        try:
-            logo_image = self._download_logo()
-            if logo_image:
-                logo_para = right_header_cell.add_paragraph()
-                logo_para.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-                run = logo_para.add_run()
-                # Logo width: match PDF size (approximately 1.8 inches for better proportion)
-                run.add_picture(logo_image, width=Inches(1.8))
-                logo_para.paragraph_format.space_before = Pt(0)
-                logo_para.paragraph_format.space_after = Pt(0)
-        except Exception as e:
-            logger.warning(f"Could not add logo: {str(e)}")
-            # Continue without logo if download fails
-        
-        # Add spacing after header - match PDF exactly
-        spacing_para = doc.add_paragraph()
-        spacing_para.paragraph_format.space_after = Pt(8)  # Tighter spacing after header
+        # Add header to the document (Word header section)
+        self._add_document_header(doc, content.get('header', ''))
         
         # Create two-column layout using table
         table = doc.add_table(rows=1, cols=2)
@@ -223,18 +150,6 @@ class CVGenerator:
             
             self._add_spacing(left_cell)
         
-        # Industry Experience
-        if content.get('industry_experience'):
-            self._add_section_header(left_cell, "Industry Experience")
-            industry_text = content['industry_experience']
-            if isinstance(industry_text, str):
-                industry_list = [i.strip() for i in industry_text.replace(',', '\n').split('\n') if i.strip()]
-            else:
-                industry_list = industry_text if isinstance(industry_text, list) else []
-            for industry in industry_list:
-                self._add_bullet_point(left_cell, industry)  # Already justified in _add_bullet_point
-            self._add_spacing(left_cell)
-        
         # Functional Skills
         if content.get('functional_skills'):
             self._add_section_header(left_cell, "Functional Skills")
@@ -245,6 +160,18 @@ class CVGenerator:
                 skills_list = skills_text if isinstance(skills_text, list) else []
             for skill in skills_list:
                 self._add_bullet_point(left_cell, skill)  # Already justified in _add_bullet_point
+            self._add_spacing(left_cell)
+        
+        # Industry Experience
+        if content.get('industry_experience'):
+            self._add_section_header(left_cell, "Industry Experience")
+            industry_text = content['industry_experience']
+            if isinstance(industry_text, str):
+                industry_list = [i.strip() for i in industry_text.replace(',', '\n').split('\n') if i.strip()]
+            else:
+                industry_list = industry_text if isinstance(industry_text, list) else []
+            for industry in industry_list:
+                self._add_bullet_point(left_cell, industry)  # Already justified in _add_bullet_point
             self._add_spacing(left_cell)
         
         # RIGHT COLUMN
@@ -261,7 +188,7 @@ class CVGenerator:
             summary_run.font.name = 'Calibri'
             summary_header.paragraph_format.space_before = Pt(0)
             summary_header.paragraph_format.space_after = Pt(3)
-            # Summary paragraphs - regular text, not bullets - justified alignment
+            # Summary paragraphs - regular text, not bullets - left-aligned
             summary_text = content['summary']
             if isinstance(summary_text, str):
                 # Split by double newlines for paragraphs
@@ -275,10 +202,11 @@ class CVGenerator:
             for para in paragraphs:
                 p = right_cell.add_paragraph(para)
                 p.paragraph_format.space_before = Pt(0)
-                p.paragraph_format.space_after = Pt(6)  # Spacing after summary paragraphs
-                p.paragraph_format.left_indent = Inches(0.15)  # Left indent for content under headers
-                p.paragraph_format.line_spacing = 1.15  # Slightly more line spacing for readability
-                p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY  # Justify text
+                p.paragraph_format.space_after = Pt(4)  # Compact spacing after summary paragraphs
+                p.paragraph_format.left_indent = Inches(0.1)  # Minimal left indent
+                p.paragraph_format.line_spacing_rule = WD_LINE_SPACING.EXACTLY  # Exact spacing - no extra space on wrapped lines
+                p.paragraph_format.line_spacing = Pt(11)  # 11pt line spacing for 9pt font (tight but readable)
+                p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY  # Justified text
                 for run in p.runs:
                     run.font.size = Pt(9)  # Paragraph font size set to 9pt
                     run.font.name = 'Calibri'
@@ -449,45 +377,76 @@ class CVGenerator:
                     run.font.name = 'Calibri'
                 
                 header_p.paragraph_format.space_before = Pt(0)
-                header_p.paragraph_format.space_after = Pt(4)  # Spacing after header for better readability
+                header_p.paragraph_format.space_after = Pt(6)  # Spacing after job title before first category (matches image)
                 header_p.paragraph_format.left_indent = Inches(0)  # Job title at left edge
                 
-                # Responsibilities - match PDF exactly (normal text with square bullets, no bold)
+                # Responsibilities - with optional category headers
                 if project.get('responsibilities'):
                     for resp in project['responsibilities']:
                         # Clean up responsibility text
                         resp_clean = resp.strip()
-                        # Remove any leading/trailing punctuation issues
-                        resp_clean = re.sub(r'^[-•*▪]\s*', '', resp_clean).strip()
-                        # Remove any markdown bold formatting
-                        resp_clean = re.sub(r'\*\*([^*]+)\*\*', r'\1', resp_clean)
-                        resp_clean = re.sub(r'\*([^*]+)\*', r'\1', resp_clean)
-                        # Remove any trailing periods that might interfere
-                        resp_clean = resp_clean.rstrip('.')
-                        if resp_clean and len(resp_clean) > 3:  # Ensure meaningful content
-                            # Use bullet point function which ensures normal text (not bold)
-                            self._add_bullet_point(work_exp_cell, resp_clean)
+                        
+                        # Check if this is a category header (ends with ":" and doesn't start with bullet)
+                        is_category_header = (
+                            resp_clean.endswith(':') and 
+                            not resp_clean.startswith('-') and 
+                            not resp_clean.startswith('•') and 
+                            not resp_clean.startswith('▪') and
+                            len(resp_clean) < 100 and  # Headers are typically shorter
+                            resp_clean.count(':') == 1 and  # Only one colon at the end
+                            not resp_clean.startswith('Technologies')  # Not the technologies line
+                        )
+                        
+                        if is_category_header:
+                            # Render as category header (bold, no bullet) - matching image format
+                            category_p = work_exp_cell.add_paragraph()
+                            category_run = category_p.add_run(resp_clean)
+                            category_run.font.bold = True
+                            category_run.font.size = Pt(9)
+                            category_run.font.name = 'Calibri'
+                            category_run.font.color.rgb = RGBColor(0, 0, 0)  # Black color
+                            category_p.paragraph_format.space_before = Pt(8)  # Space before category (matches image)
+                            category_p.paragraph_format.space_after = Pt(3)  # Space after category before bullets
+                            category_p.paragraph_format.left_indent = Inches(0)  # No indent - flush left (matches image)
+                            category_p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
+                            category_p.paragraph_format.line_spacing_rule = WD_LINE_SPACING.EXACTLY  # Exact spacing
+                            category_p.paragraph_format.line_spacing = Pt(11)  # Tight spacing
+                        else:
+                            # Regular responsibility bullet point
+                            # Remove any leading/trailing punctuation issues
+                            resp_clean = re.sub(r'^[-•*▪]\s*', '', resp_clean).strip()
+                            # Remove any markdown bold formatting
+                            resp_clean = re.sub(r'\*\*([^*]+)\*\*', r'\1', resp_clean)
+                            resp_clean = re.sub(r'\*([^*]+)\*', r'\1', resp_clean)
+                            # Remove any trailing periods that might interfere
+                            resp_clean = resp_clean.rstrip('.')
+                            if resp_clean and len(resp_clean) > 3:  # Ensure meaningful content
+                                # Use bullet point function which ensures normal text (not bold)
+                                self._add_bullet_point(work_exp_cell, resp_clean)
                 
-                # Technologies (if present) - match PDF exactly with 9pt font
+                # Technologies (if present) - justified format
                 if project.get('technologies'):
                     tech_p = work_exp_cell.add_paragraph()
                     tech_run = tech_p.add_run('Technologies: ')
-                    tech_run.font.italic = True
+                    tech_run.font.italic = False  # Not italic - plain text
+                    tech_run.font.bold = False
                     tech_run.font.size = Pt(9)  # Paragraph font size set to 9pt
                     tech_run.font.name = 'Calibri'
                     tech_text = tech_p.add_run(', '.join(project['technologies']))
                     tech_text.font.size = Pt(9)  # Paragraph font size set to 9pt
                     tech_text.font.name = 'Calibri'
                     tech_text.font.bold = False
-                    tech_p.paragraph_format.space_before = Pt(0)
-                    tech_p.paragraph_format.space_after = Pt(3)  # Spacing between projects
-                    tech_p.paragraph_format.left_indent = Inches(0.25)  # Left indent for content
-                    tech_p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY  # Justify text
+                    tech_p.paragraph_format.space_before = Pt(3)  # Small space before technologies
+                    tech_p.paragraph_format.space_after = Pt(3)  # Spacing after technologies
+                    tech_p.paragraph_format.left_indent = Inches(0)  # No indent - flush left
+                    tech_p.paragraph_format.line_spacing_rule = WD_LINE_SPACING.EXACTLY  # Exact spacing
+                    tech_p.paragraph_format.line_spacing = Pt(11)  # Tight spacing
+                    tech_p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY  # Justified text
                 
                 # Add spacing between projects (if not last one and project has content)
                 if project != content['projects'][-1] and (project.get('responsibilities') or project.get('technologies')):
                     spacing_p = work_exp_cell.add_paragraph()
-                    spacing_p.paragraph_format.space_after = Pt(6)  # More spacing between job entries
+                    spacing_p.paragraph_format.space_after = Pt(10)  # More spacing between different job entries (matches image)
         
         doc.save(output_path)
     
@@ -507,64 +466,44 @@ class CVGenerator:
         p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
     
     def _add_category_skill(self, cell, category: str, skills: str):
-        """Add a category with comma-separated skills - 9pt font with justified text and left indent"""
+        """Add a category with comma-separated skills using Word's native bullet style"""
         p = cell.add_paragraph()
-        # Add square bullet character (▪) before category
-        bullet_run = p.add_run('▪ ')
-        bullet_run.font.size = Pt(9)  # Paragraph font size set to 9pt
-        bullet_run.font.name = 'Calibri'
-        bullet_run.font.bold = False
+        
+        # Apply Word's List Bullet style
+        p.style = 'List Bullet'
+        
         # Clean category name - remove any markdown bold formatting
         category_clean = re.sub(r'\*\*([^*]+)\*\*', r'\1', category)
         category_clean = re.sub(r'\*([^*]+)\*', r'\1', category_clean)
+        
         # Add category name in bold
         category_run = p.add_run(f"{category_clean}: ")
         category_run.font.bold = True
         category_run.font.size = Pt(9)  # Paragraph font size set to 9pt
         category_run.font.name = 'Calibri'
+        
         # Add skills (comma-separated) in regular font (NOT bold)
-        # Ensure skills text has no bold formatting
         skills_clean = re.sub(r'\*\*([^*]+)\*\*', r'\1', skills)
         skills_clean = re.sub(r'\*([^*]+)\*', r'\1', skills_clean)
         skills_run = p.add_run(skills_clean)
         skills_run.font.bold = False
         skills_run.font.size = Pt(9)  # Paragraph font size set to 9pt
         skills_run.font.name = 'Calibri'
-        # Add left spacing between header and content
-        p.paragraph_format.left_indent = Inches(0.15)  # Left indent for content under headers
-        p.paragraph_format.first_line_indent = Inches(-0.15)  # Hanging indent for bullet
+        
+        # Format for compact layout
+        p.paragraph_format.left_indent = Inches(0.2)  # Minimal left indent (compact format)
         p.paragraph_format.space_after = Pt(0)  # No space after for compact look
         p.paragraph_format.space_before = Pt(0)
-        p.paragraph_format.line_spacing = 1.0  # Single line spacing
-        p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY  # Justify text
+        p.paragraph_format.line_spacing_rule = WD_LINE_SPACING.EXACTLY  # Exact spacing
+        p.paragraph_format.line_spacing = Pt(11)  # Tight spacing
+        p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT  # Left-aligned
     
     def _add_bullet_point(self, cell, text: str):
-        """Add a bullet point to a cell with square bullet - 9pt font with justified text"""
+        """Add a bullet point using Word's native bullet list style"""
         p = cell.add_paragraph()
         
-        # CRITICAL: Clear paragraph style to avoid any inherited bold formatting
-        p.style = None
-        
-        # Use square bullet character (U+25AA)
-        square_bullet = '\u25AA'  # Unicode square bullet (▪)
-        bullet_run = p.add_run(f'{square_bullet} ')
-        bullet_run.font.size = Pt(9)  # Paragraph font size set to 9pt
-        bullet_run.font.name = 'Calibri'
-        bullet_run.font.bold = False
-        bullet_run.font.italic = False
-        
-        # Force remove bold from bullet run's XML properties
-        try:
-            bullet_rPr = bullet_run._element.get_or_add_rPr()
-            b = bullet_rPr.find(qn('w:b'))
-            if b is not None:
-                b.set(qn('w:val'), 'false')
-            else:
-                b_elem = OxmlElement('w:b')
-                b_elem.set(qn('w:val'), 'false')
-                bullet_rPr.append(b_elem)
-        except Exception as e:
-            logger.warning(f"Could not set bullet bold to false in XML: {e}")
+        # Apply Word's List Bullet style to make bullets recognized by Word
+        p.style = 'List Bullet'
         
         # Clean text thoroughly - remove any markdown bold formatting
         text_clean = text
@@ -576,56 +515,28 @@ class CVGenerator:
         # Remove any leading/trailing whitespace
         text_clean = text_clean.strip()
         
-        # Add text as a single run and explicitly set all font properties
-        # This ensures no bold formatting is applied
+        # Add text with proper formatting
         text_run = p.add_run(text_clean)
         text_run.font.size = Pt(9)  # Paragraph font size set to 9pt
         text_run.font.name = 'Calibri'
-        text_run.font.bold = False  # CRITICAL: Explicitly ensure not bold
+        text_run.font.bold = False  # Not bold
         text_run.font.italic = False
         
-        # Force remove bold from text run's XML properties - this is the most important step
-        try:
-            rPr = text_run._element.get_or_add_rPr()
-            # Remove or set bold to false in XML
-            b = rPr.find(qn('w:b'))
-            if b is not None:
-                b.set(qn('w:val'), 'false')
-            else:
-                # Add bold element set to false - this explicitly disables bold
-                b_elem = OxmlElement('w:b')
-                b_elem.set(qn('w:val'), 'false')
-                rPr.append(b_elem)
-            
-            # Also ensure no bold style is inherited
-            bCs = rPr.find(qn('w:bCs'))  # Complex script bold
-            if bCs is not None:
-                bCs.set(qn('w:val'), 'false')
-        except Exception as e:
-            logger.warning(f"Could not set text bold to false in XML: {e}")
-        
-        # Add left spacing between header and content with justified text
-        # Use proper indentation for square bullets
-        p.paragraph_format.left_indent = Inches(0.25)  # Left indent for content under headers
-        p.paragraph_format.first_line_indent = Inches(-0.2)  # Hanging indent for bullet
-        p.paragraph_format.space_after = Pt(2)  # Small space after for readability
+        # Format the paragraph for compact, justified layout (work experience)
+        p.paragraph_format.left_indent = Inches(0.25)  # Bullet indent (matches image)
+        p.paragraph_format.first_line_indent = Inches(-0.15)  # Hanging indent for bullet (matches image)
+        p.paragraph_format.space_after = Pt(3)  # Small space after for readability (matches image)
         p.paragraph_format.space_before = Pt(0)
-        p.paragraph_format.line_spacing = 1.15  # Slightly more line spacing for readability
-        p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY  # Justify text
+        p.paragraph_format.line_spacing_rule = WD_LINE_SPACING.EXACTLY  # Exact spacing - no extra space on wrapped lines
+        p.paragraph_format.line_spacing = Pt(11)  # 11pt line spacing for 9pt font (tight but readable)
+        p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY  # Justified text
     
     def _add_bullet_point_bold(self, cell, text: str):
-        """Add a bullet point to a cell with square bullet - 9pt font with BOLD text and justified alignment"""
+        """Add a bullet point using Word's native bullet list style with BOLD text"""
         p = cell.add_paragraph()
         
-        # CRITICAL: Clear paragraph style to avoid any inherited formatting
-        p.style = None
-        
-        # Use square bullet character (U+25AA)
-        square_bullet = '\u25AA'  # Unicode square bullet (▪)
-        bullet_run = p.add_run(f'{square_bullet} ')
-        bullet_run.font.size = Pt(9)
-        bullet_run.font.name = 'Calibri'
-        bullet_run.font.bold = False
+        # Apply Word's List Bullet style to make bullets recognized by Word
+        p.style = 'List Bullet'
         
         # Clean text thoroughly - remove any markdown formatting
         text_clean = text
@@ -641,37 +552,140 @@ class CVGenerator:
         text_run.font.bold = True  # Make education text BOLD
         text_run.font.italic = False
         
-        # Set paragraph formatting with left indent and justified text
-        p.paragraph_format.left_indent = Inches(0.25)  # Left indent for content under headers
-        p.paragraph_format.first_line_indent = Inches(-0.2)  # Hanging indent for bullet
+        # Format the paragraph for compact, justified layout
+        p.paragraph_format.left_indent = Inches(0.3)  # Minimal left indent
         p.paragraph_format.space_after = Pt(2)  # Small space after for readability
         p.paragraph_format.space_before = Pt(0)
-        p.paragraph_format.line_spacing = 1.15  # Slightly more line spacing for readability
-        p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY  # Justify text
+        p.paragraph_format.line_spacing_rule = WD_LINE_SPACING.EXACTLY  # Exact spacing - no extra space on wrapped lines
+        p.paragraph_format.line_spacing = Pt(11)  # 11pt line spacing for 9pt font (tight but readable)
+        p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY  # Justified text
     
     def _add_bullet_point_doc(self, doc, text: str):
-        """Add a bullet point to document with square bullet - 9pt font with justified text"""
+        """Add a bullet point to document using Word's native bullet style"""
         p = doc.add_paragraph()
-        # Add square bullet character (▪) - 9pt font
-        bullet_run = p.add_run('▪ ')
-        bullet_run.font.size = Pt(9)  # Paragraph font size set to 9pt
-        bullet_run.font.name = 'Calibri'
-        bullet_run.font.bold = False
+        
+        # Apply Word's List Bullet style
+        p.style = 'List Bullet'
+        
         # Add the text with 9pt font
         text_run = p.add_run(text)
         text_run.font.size = Pt(9)  # Paragraph font size set to 9pt
         text_run.font.name = 'Calibri'
         text_run.font.bold = False
-        # Match PDF indentation for project bullets
-        p.paragraph_format.left_indent = Inches(0.15)  # Match left column bullets
-        p.paragraph_format.first_line_indent = Inches(-0.15)
+        
+        # Format for compact layout
+        p.paragraph_format.left_indent = Inches(0.2)  # Compact indent
         p.paragraph_format.space_after = Pt(0)  # No space after for compact look
         p.paragraph_format.space_before = Pt(0)
-        p.paragraph_format.line_spacing = 1.0
+        p.paragraph_format.line_spacing_rule = WD_LINE_SPACING.EXACTLY  # Exact spacing
+        p.paragraph_format.line_spacing = Pt(11)  # Tight spacing
+        p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
     
     def _add_spacing(self, cell):
         """Add spacing paragraph"""
         cell.add_paragraph()
+    
+    def _add_document_header(self, doc, header_text: str):
+        """
+        Add header section to the Word document (first page only)
+        Header contains: Name | Position on left, Logo on right
+        """
+        # Access the header of the first section (default section)
+        section = doc.sections[0]
+        
+        # Enable different first page header
+        section.different_first_page_header_footer = True
+        
+        # Get the first page header
+        header = section.first_page_header
+        
+        # Create a table in the header with 2 columns
+        header_table = header.add_table(rows=1, cols=2, width=Inches(7))
+        header_table.style = None
+        
+        # Set column widths
+        header_table.columns[0].width = Inches(4.5)  # Left: Name/Position
+        header_table.columns[1].width = Inches(2.5)  # Right: Logo
+        
+        # Remove borders from header table
+        for row in header_table.rows:
+            for cell in row.cells:
+                tc = cell._tc
+                tcPr = tc.get_or_add_tcPr()
+                tcBorders = OxmlElement('w:tcBorders')
+                for border_name in ['top', 'left', 'bottom', 'right', 'insideH', 'insideV']:
+                    border = OxmlElement(f'w:{border_name}')
+                    border.set(qn('w:val'), 'nil')
+                    tcBorders.append(border)
+                tcPr.append(tcBorders)
+        
+        # Left cell: Name and Position
+        left_cell = header_table.rows[0].cells[0]
+        left_cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
+        
+        if header_text:
+            # Parse "Name | Position" format
+            if '|' in header_text:
+                parts = [p.strip() for p in header_text.split('|')]
+                name = parts[0] if parts else ""
+                position = parts[1] if len(parts) > 1 else ""
+            else:
+                name = header_text
+                position = ""
+            
+            # Create a single line with "Name | Position"
+            if name and position:
+                header_p = left_cell.add_paragraph()
+                header_p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+                
+                # Name (14pt, bold, black)
+                name_run = header_p.add_run(name + " | ")
+                name_run.font.size = Pt(14)
+                name_run.font.bold = True
+                name_run.font.name = 'Calibri'
+                name_run.font.color.rgb = RGBColor(0, 0, 0)  # Black color
+                
+                # Position (14pt, bold, blue)
+                pos_run = header_p.add_run(position)
+                pos_run.font.size = Pt(14)
+                pos_run.font.bold = True
+                pos_run.font.name = 'Calibri'
+                pos_run.font.color.rgb = RGBColor(91, 155, 213)  # Blue color
+                
+                header_p.paragraph_format.space_before = Pt(0)
+                header_p.paragraph_format.space_after = Pt(0)
+            elif name:
+                header_p = left_cell.add_paragraph()
+                header_p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+                name_run = header_p.add_run(name)
+                name_run.font.size = Pt(14)
+                name_run.font.bold = True
+                name_run.font.name = 'Calibri'
+                name_run.font.color.rgb = RGBColor(0, 0, 0)  # Black color
+                header_p.paragraph_format.space_before = Pt(0)
+                header_p.paragraph_format.space_after = Pt(0)
+        
+        # Right cell: Logo
+        right_cell = header_table.rows[0].cells[1]
+        right_cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
+        
+        # Add logo
+        try:
+            logo_image = self._download_logo()
+            if logo_image:
+                logo_para = right_cell.add_paragraph()
+                logo_para.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+                run = logo_para.add_run()
+                # Logo width: match the image size
+                run.add_picture(logo_image, width=Inches(1.8))
+                logo_para.paragraph_format.space_before = Pt(0)
+                logo_para.paragraph_format.space_after = Pt(0)
+        except Exception as e:
+            logger.warning(f"Could not add logo to header: {str(e)}")
+            # Continue without logo if download fails
+        
+        # Set header margin (increased for larger font)
+        section.header_distance = Inches(0.4)
     
     def _download_logo(self) -> Optional[BytesIO]:
         """Get Datamatics logo from local file or download from URL"""
@@ -950,6 +964,13 @@ class CVGenerator:
                         # Skip if it looks like a section header
                         if not any(keyword in clean_line.lower() for keyword in ['technical skills', 'summary', 'education', 'certification', 'projects']):
                             current_project['responsibilities'].append(clean_line)
+                elif line_clean.endswith(':') and not line_lower.startswith('technologies') and not line_lower.startswith('dates') and len(line_clean) < 100:
+                    # This might be a category header (e.g., "ETL Development:", "Project Management:")
+                    # Add it to responsibilities so it can be rendered as a category header
+                    if current_project and line_clean and line_clean.count(':') == 1:
+                        # Make sure it's not a main section header
+                        if not any(keyword in line_lower for keyword in ['technical skills', 'industry experience', 'functional skills', 'education', 'summary', 'certification', 'projects experience', 'work experience']):
+                            current_project['responsibilities'].append(line_clean)
                 elif line_clean and not any(keyword in line_lower for keyword in ['left_column', 'right_column', 'projects experience', 'technical skills', 'industry experience', 'functional skills', 'education', 'summary', 'certification']):
                     # Check if it's a project title (not a date, not technologies, not a bullet)
                     if not re.match(r'^\d{1,2}/\d{4}', line_clean) and 'technologies' not in line_lower:

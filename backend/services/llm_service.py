@@ -40,7 +40,7 @@ class LLMService:
             
             CRITICAL FORMATTING REQUIREMENTS:
             - Use EXACT section markers: [HEADER], [LEFT_COLUMN_START], [LEFT_COLUMN_END], [RIGHT_COLUMN_START], [RIGHT_COLUMN_END], [PROJECTS_EXPERIENCE]
-            - Section headers must be EXACTLY: "Technical Skills:", "Industry Experience:", "Functional Skills:", "Summary:", "Education/Qualifications/Certifications:"
+            - Section headers must be EXACTLY: "Technical Skills:", "Functional Skills:", "Industry Experience:", "Summary:", "Education/Qualifications/Certifications:"
             - Use bullet points with "- " prefix for all list items
             - Dates must be in format: "MM/YYYY – MM/YYYY" or "MM/YYYY – Present"
             
@@ -91,11 +91,11 @@ class LLMService:
             Microsoft Azure
             
             CRITICAL: Only include categories that have at least 1 skill from the CV. Skip categories with no skills.
-            2. Industry Experience: - Extract ALL industries/sectors worked in or mentioned in the CV (e.g., Finance, Telecom, Banking, Healthcare, Manufacturing, Retail, etc.). Be comprehensive - look for industry mentions in work experience, projects, and context. Aim to identify at least 5-10 different industries or sectors. Include both specific industries (e.g., "Pharmaceuticals") and broader sectors (e.g., "Healthcare").
-            3. Functional Skills: - Extract ALL soft skills, management skills, leadership skills, interpersonal skills, and professional competencies mentioned or demonstrated in the CV. Be thorough and comprehensive. Look for skills in responsibilities, achievements, and descriptions. Aim to identify at least 10-15 functional skills. Include skills like: Leadership, Project Management, Stakeholder Management, Communication, Problem Solving, Team Collaboration, Analytical Thinking, Strategic Planning, Change Management, Conflict Resolution, Time Management, Training & Mentoring, Business Analysis, etc.
+            2. Functional Skills: - Extract ALL soft skills, management skills, leadership skills, interpersonal skills, and professional competencies mentioned or demonstrated in the CV. Be thorough and comprehensive. Look for skills in responsibilities, achievements, and descriptions. Aim to identify at least 10-15 functional skills. Include skills like: Leadership, Project Management, Stakeholder Management, Communication, Problem Solving, Team Collaboration, Analytical Thinking, Strategic Planning, Change Management, Conflict Resolution, Time Management, Training & Mentoring, Business Analysis, etc.
+            3. Industry Experience: - Extract ALL industries/sectors worked in or mentioned in the CV (e.g., Finance, Telecom, Banking, Healthcare, Manufacturing, Retail, etc.). Be comprehensive - look for industry mentions in work experience, projects, and context. Aim to identify at least 5-10 different industries or sectors. Include both specific industries (e.g., "Pharmaceuticals") and broader sectors (e.g., "Healthcare").
             
             RIGHT COLUMN ([RIGHT_COLUMN_START] to [RIGHT_COLUMN_END]):
-            1. Summary: - Write ONE comprehensive professional paragraph in FIRST PERSON, starting with "I am". The summary should be written as if the person is presenting themselves. The paragraph should cover: years of experience and specialization, technical expertise and modules/technologies, industries served, key achievements and project types, business process expertise, and value delivered. Example: "I am a highly motivated and results-driven [role] with [X] years of extensive experience in [areas]. Throughout my career, I have worked across diverse industries including [industries], where I have successfully delivered [achievements]. I specialize in [specializations]. My professional expertise extends to [expertise]. I take pride in [value]. With a proven track record of [track record], I am deeply committed to [commitment]."
+            1. Summary: - Write ONE LONG comprehensive professional paragraph in FIRST PERSON, starting with "I am". CRITICAL LENGTH REQUIREMENT: The summary MUST be LONG and DETAILED - minimum 150 words, ideally 200-250 words (8-15 sentences). Create a comprehensive narrative that fully captures the professional's profile. The summary should cover ALL of these in detail: years of experience (specific number) and role/specialization, core technical expertise with all systems/modules/technologies (be comprehensive - list many), industries and sectors served (mention 5-8 industries), key achievements and project types with examples, business process expertise and domain knowledge, methodologies used (Agile, SAP Activate, SDLC, etc.), leadership and team collaboration, value delivered with metrics/impact, professional qualities and soft skills, and commitment to continuous learning. Write as if the person is confidently presenting their complete professional story in one substantive, flowing paragraph.
             2. Education/Qualifications/Certifications: - List ALL certifications, licenses, and training programs FIRST (one per bullet point with "- " prefix), then list ONLY THE MOST RECENT/HIGHEST educational qualification LAST. 
             
             CRITICAL EDUCATION FORMATTING:
@@ -120,28 +120,63 @@ class LLMService:
             - DO NOT put responsibilities as a comma-separated list
             - Each responsibility MUST be on its own line with "- " prefix
             
-            - Then bullet points for key responsibilities and achievements (5-10 per project, focus on detailed explanations)
-            - CRITICAL: Each responsibility should be DETAILED, EXPLANATORY, and LENGTHY. Write comprehensive descriptions that explain:
-              * What was done (specific actions and tasks)
-              * How it was done (methodologies, tools, approaches)
-              * Why it was done (business context and objectives)
-              * Results and impact (outcomes, improvements, achievements)
-              * Technical details and implementations
-              * Collaboration and team interactions
-              * Process improvements and optimizations
+            - Then bullet points for key responsibilities and achievements (8-15 per project, focus on detailed explanations)
+            - OPTIONAL BUT RECOMMENDED: If there are many responsibilities (8+ bullet points), you can categorize them into logical groups. Use category headers like:
+              * "ETL Development:" / "Development & Implementation:"
+              * "Project Management & Delivery:" / "Project Leadership:"
+              * "Collaboration & Requirements Analysis:" / "Stakeholder Engagement:"
+              * "Quality Assurance:" / "Testing & Validation:"
+              * "Technical Leadership:" / "System Administration:"
+              * "Support & Maintenance:" / "Production Support:"
               
-              Each bullet point should be a complete, well-explained sentence or multiple sentences (2-4 sentences per bullet point is ideal). Avoid short, one-line descriptions. Be descriptive and provide context.
+              Format with categories (OPTIONAL):
+              ETL Development:
+              - Detailed responsibility 1 explaining what, how, why, and results
+              - Detailed responsibility 2 with technical context and impact
               
-              Example of CORRECT format:
-              - Installed, configured Informatica across multiple environments, ensuring seamless integration and operation
-              - Conducted parameter file movements, updated TNS and ODBC entries, performed server-side testing to ensure system integrity
-              - Created user folders, groups, roles, and assigned necessary privileges to maintain secure access control
-              - Investigated and diagnosed Informatica service failures, implementing solutions to prevent recurrence
-              - Monitored production jobs closely, ensuring timely and accurate execution
-              Technologies: Informatica 9x, 10.6, Oracle 11g, Windows 2020 Server, Linux, Unix
+              Project Management & Delivery:
+              - Detailed responsibility 3 with comprehensive explanation
+              - Detailed responsibility 4 with specific achievements
+              
+              OR simple format (if categories not needed):
+              - Detailed responsibility 1
+              - Detailed responsibility 2
+              - Detailed responsibility 3
+            
+            - CRITICAL: Each responsibility should be VERY DETAILED, EXPLANATORY, and EXTREMELY LENGTHY. Write comprehensive, thorough descriptions that explain:
+              * What was done (specific actions and tasks with concrete, detailed examples)
+              * How it was done (methodologies, tools, approaches, processes, and step-by-step details)
+              * Why it was done (business context, objectives, requirements, and business value)
+              * Results and impact (outcomes, improvements, achievements, metrics, and quantifiable results)
+              * Technical details and implementations (specific technologies, configurations, architectures, solutions)
+              * Collaboration and team interactions (stakeholders, cross-functional work, team dynamics)
+              * Process improvements and optimizations (efficiency gains, quality improvements, innovations)
+              * Challenges faced and solutions implemented (problem-solving approaches)
+              * Scale and scope (data volumes, system sizes, user counts, complexity levels)
+              
+              CRITICAL LENGTH REQUIREMENT: Each bullet point MUST be 4-8 sentences (60-120 words). Make them substantive, detailed, and comprehensive. Write as if explaining the work to someone who needs to fully understand the scope, complexity, and impact. Include specific examples, metrics, and technical details whenever possible. Avoid short, one-line descriptions. Be EXTREMELY descriptive and provide COMPLETE context with all relevant details.
+              
+              Example of CORRECT format WITH categories (NOTE THE LENGTH - 4-8 sentences per bullet):
+              ETL Development:
+              - Enhanced data integration capabilities by designing, developing, and implementing highly efficient ETL processes using Informatica PowerCenter 10.6, which enabled seamless bidirectional data flow from over 25 heterogeneous source systems including Oracle ERP, SAP S/4HANA, SQL Server databases, and cloud-based applications to enterprise-scale target data warehouses supporting 500+ concurrent users. The solution incorporated advanced data transformation logic, data quality rules, and real-time validation mechanisms to ensure 99.9% data accuracy and consistency across the entire enterprise ecosystem. Implemented comprehensive error handling and recovery procedures, automated monitoring and alerting systems, and detailed logging mechanisms to track data lineage and maintain full audit trails for regulatory compliance. This initiative reduced data processing time by 45% and manual intervention requirements by 70%, while supporting data volumes exceeding 2TB daily across multiple business units.
+              - Developed and deployed over 150 complex mappings, 80+ reusable workflows, and 200+ sessions to meet aggressive project objectives and strict deadlines, incorporating sophisticated error handling mechanisms, data validation rules, business logic transformations, slowly changing dimension (SCD) implementations, and comprehensive exception management to maintain data quality, integrity, and consistency throughout the entire ETL pipeline. Worked closely with business analysts, data architects, and database administrators to understand complex business requirements, translate them into technical specifications, design optimal data flow architectures, and implement scalable solutions that could handle peak loads of 5 million records per hour. Conducted thorough unit testing, integration testing, and performance testing for each component, created detailed technical documentation including data mapping specifications and transformation rules, and provided knowledge transfer sessions to support teams to ensure smooth handover and ongoing maintenance.
+              - Optimized ETL performance and system efficiency by conducting in-depth analysis to identify bottlenecks in existing ETL processes, analyzing execution logs and performance metrics, profiling slow-running workflows, and implementing comprehensive solutions including partition-based parallel processing, pushdown optimization to leverage database processing power, efficient join strategies, index optimization, and caching mechanisms. These performance enhancements resulted in a remarkable 40% reduction in overall processing time, 60% improvement in resource utilization, 30% decrease in infrastructure costs, and the ability to process end-of-month financial close activities within a 4-hour window instead of the previous 12-hour timeframe. Additionally, implemented proactive monitoring dashboards using custom scripts and third-party tools to continuously track performance metrics, identify potential issues before they impact production, and maintain service level agreements (SLAs) with 99.5% success rate.
+              
+              Project Management & Delivery:
+              - Successfully led and executed the end-to-end migration of 200+ legacy ETL processes from outdated platforms to Informatica PowerCenter, managing a cross-functional team of 12 members including ETL developers, testers, and database administrators across multiple time zones. The migration initiative resulted in 50% increase in operational efficiency, 65% reduction in maintenance effort through standardized code practices, 35% decrease in system downtime, and annual cost savings of $500K through infrastructure consolidation and improved resource utilization. Developed comprehensive migration strategy and detailed project plan covering all phases including assessment, design, development, testing, and deployment, established clear governance processes and quality gates, conducted risk assessments and created mitigation plans, ensured zero data loss through careful data validation and reconciliation procedures, and maintained minimal business disruption by executing phased rollouts during planned maintenance windows. Coordinated extensively with business stakeholders to communicate progress, manage expectations, address concerns, and ensure alignment with strategic objectives throughout the 8-month migration program.
+              - Maintained strict adherence to established coding standards, development best practices, and architectural guidelines while consistently delivering high-quality deliverables on time and within budget, achieving 98% on-time delivery rate across 50+ releases. Coordinated seamlessly with geographically distributed offshore development teams in India and onshore teams in the US, conducting daily stand-up meetings, weekly progress reviews, and monthly stakeholder presentations to ensure smooth execution of project milestones, effective communication across teams, and timely resolution of impediments. Implemented robust code review processes with peer reviews and senior architect sign-offs, established automated unit testing frameworks achieving 85% code coverage, created comprehensive technical documentation including design specifications and runbooks, and mentored 5 junior developers on ETL best practices and Informatica features. Successfully delivered 3 major releases and 15 minor enhancements while maintaining quality metrics with less than 2% defect rate in production.
+              
+              Technologies: Informatica PowerCenter 9.x, 10.6, Oracle 11g/12c, SQL Server 2016/2019, Unix Shell Scripting, Autosys, Control-M, HP Quality Center, JIRA
+              
+              Example of CORRECT format WITHOUT categories (NOTE THE LENGTH - 4-8 sentences per bullet):
+              - Enhanced data integration capabilities by designing, developing, and implementing highly efficient ETL processes using Informatica PowerCenter 10.6, which enabled seamless bidirectional data flow from over 25 heterogeneous source systems to enterprise-scale target data warehouses supporting 500+ concurrent users, incorporating advanced data transformation logic and real-time validation mechanisms to ensure 99.9% data accuracy across the enterprise ecosystem. Implemented comprehensive error handling and recovery procedures with automated monitoring systems to track data lineage and maintain full audit trails, reducing data processing time by 45% and manual intervention by 70% while supporting data volumes exceeding 2TB daily across multiple business units.
+              - Developed and deployed over 150 complex mappings, 80+ reusable workflows, and 200+ sessions to meet aggressive project objectives and strict deadlines, incorporating sophisticated error handling mechanisms, data validation rules, business logic transformations, and exception management to maintain data quality throughout the ETL pipeline. Worked closely with business analysts and data architects to translate complex business requirements into technical specifications, conducted thorough testing for each component, created detailed technical documentation, and provided knowledge transfer sessions to ensure smooth handover and ongoing maintenance.
+              - Optimized ETL performance by conducting in-depth analysis to identify bottlenecks, analyzing execution logs, profiling slow-running workflows, and implementing comprehensive solutions including partition-based parallel processing, pushdown optimization, efficient join strategies, and caching mechanisms that resulted in 40% reduction in processing time, 60% improvement in resource utilization, and 30% decrease in infrastructure costs. Implemented proactive monitoring dashboards to continuously track performance metrics and maintain 99.5% SLA compliance.
+              - Successfully led the end-to-end migration of 200+ legacy ETL processes to Informatica PowerCenter, managing a cross-functional team of 12 members across multiple time zones and achieving 50% increase in operational efficiency, 65% reduction in maintenance effort, and annual cost savings of $500K through infrastructure consolidation. Developed comprehensive migration strategy with detailed project plans, established quality gates, conducted risk assessments, ensured zero data loss through careful validation, and maintained minimal business disruption through phased rollouts during maintenance windows.
+              Technologies: Informatica PowerCenter 9.x, 10.6, Oracle 11g/12c, SQL Server 2016/2019, Unix Shell Scripting
               
               Example of WRONG format (DO NOT DO THIS):
-              Technologies: - Installed, configured Informatica across multiple environments. Conducted parameter file movements. Created user folders. Informatica 9x, Oracle 11g
+              Technologies: - Installed, configured Informatica. Conducted parameter movements. Created user folders. Informatica 9x, Oracle 11g
               
             - ONLY if technologies/tools are mentioned separately, add them as a final line: "Technologies: Tech1, Tech2, Tech3" (comma-separated)
             - Technologies should ONLY include tools, software versions, platforms - NOT responsibilities
@@ -165,19 +200,6 @@ class LLMService:
             Category Name 3: skill7, skill8
             (ONLY include categories with actual skills - DO NOT add empty categories)
             
-            Industry Experience:
-            - Manufacturing & Production
-            - Pharmaceuticals
-            - Healthcare
-            - Textiles
-            - Plastics & Molding
-            - BOPET Film Production
-            - Process Industry
-            - Chemical Industry
-            - Consumer Goods
-            - Industrial Manufacturing
-            (Generate 10-15 industries minimum - be comprehensive)
-            
             Functional Skills:
             - Project Management & Planning
             - Stakeholder Management & Communication
@@ -195,11 +217,24 @@ class LLMService:
             - Quality Assurance & Compliance
             - Continuous Improvement & Innovation
             (Generate 15-20 functional skills minimum - be thorough)
+            
+            Industry Experience:
+            - Pharmaceuticals & Healthcare
+            - Textiles & Manufacturing
+            - Plastics & Molding
+            - BOPET Film & Process Industry
+            - Chemicals & Process Industry
+            - Consumer Goods & Retail
+            - Food & Beverage
+            - Rubber & Tyre
+            - Automotive & Engineering
+            - Technology & Innovation
+            (Generate 10-15 industries minimum - GROUP related industries together using " & ")
             [LEFT_COLUMN_END]
             
             [RIGHT_COLUMN_START]
             Summary:
-            [Write ONE comprehensive professional paragraph in FIRST PERSON, starting with "I am". Write as if the person is presenting themselves. The paragraph should cover years of experience, specialization, technical expertise, industries, achievements, and value delivered. Do not use bullet points for summary.]
+            [Write ONE LONG comprehensive professional paragraph in FIRST PERSON, starting with "I am". Write as if the person is presenting themselves. CRITICAL: Make this paragraph LONG and DETAILED - minimum 150 words, ideally 200-250 words (8-15 sentences). Cover: specific years of experience, role/specialization, extensive technical expertise (list many systems/modules/technologies), industries served (5-8), key achievements with examples, business process expertise, methodologies, leadership experience, value delivered with metrics, professional qualities, and commitment to growth. Create a comprehensive narrative that fully captures the professional profile. Do not use bullet points for summary - write one flowing, substantive paragraph.]
             
             Education/Qualifications/Certifications: (list ALL certifications FIRST, then education LAST)
             - Certification 1
@@ -282,7 +317,7 @@ class LLMService:
 
 CRITICAL REQUIREMENTS:
 - Use EXACT section markers as specified: [HEADER], [LEFT_COLUMN_START], [LEFT_COLUMN_END], [RIGHT_COLUMN_START], [RIGHT_COLUMN_END], [PROJECTS_EXPERIENCE]
-- Section headers must match EXACTLY (case-sensitive): "Technical Skills:", "Industry Experience:", "Functional Skills:", "Summary:", "Education/Qualifications/Certifications:"
+- Section headers must match EXACTLY (case-sensitive): "Technical Skills:", "Functional Skills:", "Industry Experience:", "Summary:", "Education/Qualifications/Certifications:"
 - Use "- " (dash and space) for ALL bullet points
 - Dates must be in format: "MM/YYYY – MM/YYYY" or "MM/YYYY – Present"
 - Do NOT add any extra formatting, markdown, or special characters beyond what is specified
@@ -319,13 +354,22 @@ CRITICAL REQUIREMENTS:
                     {"role": "user", "content": user_prompt}
                 ],
                 temperature=0.2,  # Lower temperature for more consistent and accurate formatting
-                max_tokens=4000,  # Increased for longer CVs
+                max_tokens=16000,  # Significantly increased for very detailed, lengthy CVs (gpt-4o supports up to 16,384 output tokens)
                 top_p=0.95,  # Nucleus sampling for better quality
                 frequency_penalty=0.1,  # Reduce repetition
                 presence_penalty=0.1  # Encourage diverse content
             )
             
             converted_cv = response.choices[0].message.content.strip()
+            
+            # Log response statistics for debugging
+            finish_reason = response.choices[0].finish_reason
+            tokens_used = response.usage.total_tokens if hasattr(response, 'usage') else 'unknown'
+            logger.info(f"CV generation completed. Finish reason: {finish_reason}, Tokens used: {tokens_used}, Response length: {len(converted_cv)} chars")
+            
+            if finish_reason == 'length':
+                logger.warning("⚠️ Response was truncated due to max_tokens limit. Consider increasing max_tokens or simplifying the CV.")
+            
             return converted_cv
         
         except Exception as e:
@@ -398,26 +442,51 @@ CRITICAL: Only include categories that have at least 1 skill from the input. Ski
             elif section_type == "industry_experience":
                 format_instructions = """
 CRITICAL: Return ONLY a simple list format, one industry per line. Do NOT use markdown or formatting.
-Example format:
-Finance
-Telecom
-Banking
-Taxation
-Manufacturing & Retail
 
-Return just the industry names, one per line, nothing else."""
+GROUPING RULES:
+- GROUP related or complementary industries together using " & " (space-ampersand-space)
+- Combine industries that are typically related or often work together
+- Each line should contain either a single industry OR a group of 2-3 related industries
+
+Example format:
+Banking & Financial Services
+Insurance & Risk Management
+Defense & Government
+Pharmaceuticals & Healthcare
+Textiles & Manufacturing
+Food & Beverage
+Rubber & Tyre
+Logistics & Supply Chain
+Enterprise Content Management
+Data Warehousing & Data Integration
+
+Return just the industry names (grouped where appropriate), one per line, nothing else."""
             elif section_type == "functional_skills":
                 format_instructions = """
 CRITICAL: Return ONLY a simple list format, one skill per line. Do NOT use markdown, bold text, or descriptions.
-Example format:
-Leadership & Innovation
-Analytical Skills and Presentation Skills
-Stakeholders Management
-Work in Multi-Vendor Environment
-Conflict Resolution
-Teamwork & Flexibility
 
-Return just the skill names, one per line, nothing else."""
+GROUPING RULES:
+- GROUP related or complementary skills together using " & " (space-ampersand-space)
+- Combine skills that are typically related or naturally go together
+- Each line should contain either a single skill OR a group of 2-3 related skills
+
+Example format:
+Project Management & Planning
+Stakeholder Management & Communication
+Business Process Analysis & Re-engineering
+Change Management & Implementation
+Team Leadership & Mentoring
+Problem Solving & Troubleshooting
+Strategic Planning & Execution
+Requirements Gathering & Documentation
+Training & Knowledge Transfer
+Quality Assurance & Compliance
+Time Management & Prioritization
+Conflict Resolution & Negotiation
+Analytical Thinking & Decision Making
+Continuous Improvement & Innovation
+
+Return just the skill names (grouped where appropriate), one per line, nothing else."""
             elif section_type == "certifications":
                 format_instructions = """
 CRITICAL: Return ONLY a simple list format, one certification per line. Do NOT use markdown or formatting.
@@ -448,11 +517,27 @@ Bachelor of Engineering | Institution Name
 Return just the education entries, one per line, nothing else."""
             elif section_type == "summary":
                 format_instructions = """
-CRITICAL: Return ONLY ONE comprehensive paragraph in FIRST PERSON, starting with "I am". Write as if the person is presenting themselves.
+CRITICAL: Return ONLY ONE LONG comprehensive paragraph in FIRST PERSON, starting with "I am". Write as if the person is presenting themselves.
+
+LENGTH REQUIREMENT: The paragraph MUST be LONG and DETAILED - minimum 150 words, ideally 200-250 words (8-15 sentences). This is CRITICAL.
+
 Do NOT use markdown, bullet points, or formatting.
-Return a single, well-structured paragraph covering: years of experience and specialization, technical expertise and modules/technologies, industries served, key achievements and project types, business process expertise, and value delivered.
-Example: "I am a highly motivated and results-driven [role] with [X] years of extensive experience in [areas]. Throughout my career, I have worked across diverse industries including [industries], where I have successfully delivered [achievements]. I specialize in [specializations]. My professional expertise extends to [expertise]. I take pride in [value]. With a proven track record of [track record], I am deeply committed to [commitment]."
-No formatting, just one comprehensive paragraph in first person."""
+
+Return a single, well-structured, LENGTHY paragraph that comprehensively covers ALL of these elements:
+- Specific years of experience and role/specialization
+- Extensive technical expertise: list many systems, modules, technologies, platforms (be comprehensive)
+- Industries and sectors served: mention 5-8 different industries
+- Key achievements and project types with specific examples
+- Business process expertise and domain knowledge depth
+- Methodologies and frameworks used (Agile, SAP Activate, SDLC, etc.)
+- Leadership experience and team collaboration details
+- Value delivered: metrics, efficiency gains, cost savings, quality improvements
+- Professional qualities and soft skills demonstrated
+- Commitment to continuous learning and professional growth
+
+Example structure (note the LENGTH): "I am a highly motivated and results-driven [specific role] with [X] years of extensive hands-on experience in [list 4-5 specific technical areas/systems]. Throughout my professional journey, I have successfully delivered [number/types] of complex projects across diverse industries including [industry 1], [industry 2], [industry 3], [industry 4], [industry 5], and [industry 6], where I have consistently demonstrated [achievements with metrics]. I specialize in [specialization 1], [specialization 2], and [specialization 3], with deep expertise in [list many technical skills/tools/technologies]. My professional expertise extends to [additional areas], and I am proficient in [methodologies]. I have led and collaborated with cross-functional teams of [details], working closely with [stakeholders] to [outcomes]. I take pride in my ability to [value propositions], having achieved [specific results]. With a proven track record of [accomplishments], I bring [unique qualities]. I am deeply committed to [commitment] and strive to [goals]."
+
+No formatting, just one comprehensive, LONG paragraph in first person. Make it substantive and detailed - aim for 200+ words."""
             
             system_prompt = f"""You are an expert CV writer and editor. Your task is to improve and enhance CV content for the {section_type} section while:
 1. Preserving all important information
@@ -494,10 +579,18 @@ Docker"""
                     {"role": "user", "content": user_prompt}
                 ],
                 temperature=0.3,
-                max_tokens=2000
+                max_tokens=8000  # Increased for detailed, lengthy descriptions and comprehensive content
             )
             
             improved_text = response.choices[0].message.content.strip()
+            
+            # Log response statistics for debugging
+            finish_reason = response.choices[0].finish_reason
+            tokens_used = response.usage.total_tokens if hasattr(response, 'usage') else 'unknown'
+            logger.info(f"Text improvement completed ({section_type}). Finish reason: {finish_reason}, Tokens used: {tokens_used}, Response length: {len(improved_text)} chars")
+            
+            if finish_reason == 'length':
+                logger.warning(f"⚠️ Text improvement for {section_type} was truncated due to max_tokens limit. Consider increasing max_tokens.")
             
             # Clean up any markdown that might still be present
             improved_text = self._clean_markdown(improved_text, section_type)
