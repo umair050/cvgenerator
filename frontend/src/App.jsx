@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useDropzone } from "react-dropzone";
 import "./App.css";
+import CVDisplay from "./CVDisplay";
 
 const API_BASE_URL = "http://localhost:8000";
 
@@ -165,9 +166,9 @@ function App() {
             <h1 className="text-5xl font-bold text-gray-900 mb-3">
               CV Converter
             </h1>
-            <p className="text-xl text-gray-600">
+            {/* <p className="text-xl text-gray-600">
               Upload your CV, edit sections, and generate a professional resume
-            </p>
+            </p> */}
           </div>
 
           {/* File Upload Section */}
@@ -233,91 +234,36 @@ function App() {
             </div>
           )}
 
-          {/* CV Sections Form */}
+          {/* CV Display */}
           {(sections.technical_skills || sections.name) && !parsing && (
-            <div className="max-w-4xl mx-auto">
-              <div className="space-y-6">
-                {/* Name and Designation Section */}
-                <div className="bg-white rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-shadow">
-                  <div className="flex items-center space-x-3 mb-4">
-                    <span className="text-3xl">👤</span>
-                    <h2 className="text-2xl font-bold text-gray-900">
-                      Header Information
-                    </h2>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Full Name
-                      </label>
-                      <input
-                        type="text"
-                        value={sections.name}
-                        onChange={(e) => updateSection("name", e.target.value)}
-                        placeholder="Enter your full name"
-                        className="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Designation/Title
-                      </label>
-                      <input
-                        type="text"
-                        value={sections.designation}
-                        onChange={(e) =>
-                          updateSection("designation", e.target.value)
-                        }
-                        placeholder="e.g., DevOps Engineer"
-                        className="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {SECTIONS.map((section) => (
-                  <div
-                    key={section.id}
-                    className="bg-white rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-shadow"
+            <div className="space-y-6">
+              {/* Edit Hint */}
+              <div className="max-w-4xl mx-auto">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-center">
+                  <svg
+                    className="h-5 w-5 text-blue-500 mr-3 flex-shrink-0"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
                   >
-                    <div className="flex items-center space-x-3 mb-4">
-                      <span className="text-3xl">{section.icon}</span>
-                      <h2 className="text-2xl font-bold text-gray-900">
-                        {section.label}
-                      </h2>
-                    </div>
-                    {section.id === "projects_experience" ? (
-                      <div
-                        contentEditable
-                        suppressContentEditableWarning
-                        onInput={(e) =>
-                          updateSection(section.id, e.currentTarget.textContent)
-                        }
-                        placeholder={section.placeholder}
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y min-h-[300px] transition-all whitespace-pre-wrap overflow-auto bg-white"
-                        style={{
-                          fontFamily: "monospace",
-                          fontSize: "14px",
-                          lineHeight: "1.6",
-                        }}
-                      >
-                        {sections[section.id] || ""}
-                      </div>
-                    ) : (
-                      <textarea
-                        value={sections[section.id]}
-                        onChange={(e) =>
-                          updateSection(section.id, e.target.value)
-                        }
-                        placeholder={section.placeholder}
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y min-h-[100px] transition-all"
-                        rows={section.id === "summary" ? 6 : 4}
-                      />
-                    )}
-                  </div>
-                ))}
+                    <path
+                      fillRule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <p className="text-sm text-blue-800">
+                    <strong>Tip:</strong> Click on any text in the CV below to
+                    edit it directly. Changes will be reflected in the generated
+                    document.
+                  </p>
+                </div>
+              </div>
 
-                {/* Generate Button */}
+              {/* CV Preview */}
+              <CVDisplay sections={sections} onUpdate={updateSection} />
+
+              {/* Generate Button */}
+              <div className="max-w-4xl mx-auto">
                 <div className="bg-white rounded-2xl shadow-xl p-6">
                   <button
                     onClick={handleGenerateCV}
@@ -363,7 +309,7 @@ function App() {
                             d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                           />
                         </svg>
-                        <span>Generate CV</span>
+                        <span>Download Word Document</span>
                       </>
                     )}
                   </button>

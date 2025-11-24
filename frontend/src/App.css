@@ -16,3 +16,180 @@
   white-space: pre-wrap;
   word-wrap: break-word;
 }
+
+/* CV Display Styles - Matching Word Document Format */
+.cv-display {
+  font-family: 'Calibri', 'Segoe UI', 'Arial', sans-serif;
+  line-height: 1.4;
+  color: #000;
+  background: white;
+}
+
+/* Editable content styles */
+[contenteditable="true"] {
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+[contenteditable="true"]:hover {
+  background-color: #eff6ff !important;
+  border-radius: 0.25rem;
+  cursor: text;
+}
+
+[contenteditable="true"]:focus {
+  background-color: #dbeafe !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+}
+
+.cv-header {
+  padding: 1.5rem 2rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.cv-body {
+  padding: 1.5rem 2rem;
+}
+
+.cv-section {
+  margin-bottom: 1.25rem;
+}
+
+.cv-section-header {
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: #111827;
+  margin-bottom: 0.5rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.cv-bullet-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.cv-bullet-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.25rem;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+.cv-bullet {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  color: #000;
+  margin-right: 0.4rem;
+  margin-top: 0.15rem;
+}
+
+/* Work Experience Specific Styles */
+.cv-work-experience {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #e5e7eb;
+}
+
+.cv-job {
+  margin-bottom: 1.5rem;
+}
+
+.cv-job h4 {
+  font-size: 0.875rem;
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+  color: #111827;
+  letter-spacing: 0.02em;
+}
+
+/* Ensure text justification works properly */
+.text-justify {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* Compact spacing for CV sections */
+.cv-left-column .cv-section,
+.cv-right-column .cv-section {
+  margin-bottom: 1.25rem;
+}
+
+.cv-left-column .cv-section:last-child,
+.cv-right-column .cv-section:last-child {
+  margin-bottom: 0;
+}
+
+/* Print-friendly styles */
+@media print {
+  .cv-display {
+    box-shadow: none;
+    border-radius: 0;
+  }
+  
+  .cv-header,
+  .cv-body {
+    padding: 1rem;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .cv-body {
+    padding: 1rem;
+  }
+  
+  .cv-header {
+    padding: 1rem;
+  }
+}
+
+/* Work Experience Editing Styles */
+.cv-work-experience textarea {
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  resize: vertical;
+}
+
+.cv-work-experience textarea:focus {
+  outline: none;
+}
+
+.cv-work-experience pre {
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+/* Individual Job Entry Hover Effects */
+.cv-job {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.cv-job:hover {
+  transform: translateX(2px);
+}
+
+.cv-job .group:hover .opacity-0 {
+  opacity: 1;
+}
+
+/* Job Editor Styles */
+.job-editor-field {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

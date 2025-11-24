@@ -623,47 +623,38 @@ class CVGenerator:
         left_cell = header_table.rows[0].cells[0]
         left_cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
         
-        if header_text:
-            # Parse "Name | Position" format
-            if '|' in header_text:
-                parts = [p.strip() for p in header_text.split('|')]
-                name = parts[0] if parts else ""
-                position = parts[1] if len(parts) > 1 else ""
-            else:
-                name = header_text
-                position = ""
-            
-            # Create a single line with "Name | Position"
-            if name and position:
-                header_p = left_cell.add_paragraph()
-                header_p.alignment = WD_ALIGN_PARAGRAPH.LEFT
-                
-                # Name (14pt, bold, black)
-                name_run = header_p.add_run(name + " | ")
-                name_run.font.size = Pt(14)
-                name_run.font.bold = True
-                name_run.font.name = 'Calibri'
-                name_run.font.color.rgb = RGBColor(0, 0, 0)  # Black color
-                
-                # Position (14pt, bold, blue)
-                pos_run = header_p.add_run(position)
-                pos_run.font.size = Pt(14)
-                pos_run.font.bold = True
-                pos_run.font.name = 'Calibri'
-                pos_run.font.color.rgb = RGBColor(91, 155, 213)  # Blue color
-                
-                header_p.paragraph_format.space_before = Pt(0)
-                header_p.paragraph_format.space_after = Pt(0)
-            elif name:
-                header_p = left_cell.add_paragraph()
-                header_p.alignment = WD_ALIGN_PARAGRAPH.LEFT
-                name_run = header_p.add_run(name)
-                name_run.font.size = Pt(14)
-                name_run.font.bold = True
-                name_run.font.name = 'Calibri'
-                name_run.font.color.rgb = RGBColor(0, 0, 0)  # Black color
-                header_p.paragraph_format.space_before = Pt(0)
-                header_p.paragraph_format.space_after = Pt(0)
+        # Parse "Name | Position" format, with defaults if missing
+        if header_text and '|' in header_text:
+            parts = [p.strip() for p in header_text.split('|')]
+            name = parts[0] if parts and parts[0] else "Candidate Name"
+            position = parts[1] if len(parts) > 1 and parts[1] else "Position"
+        elif header_text:
+            name = header_text if header_text.strip() else "Candidate Name"
+            position = "Position"
+        else:
+            name = "Candidate Name"
+            position = "Position"
+        
+        # Create a single line with "Name | Position"
+        header_p = left_cell.add_paragraph()
+        header_p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        
+        # Name (14pt, bold, black)
+        name_run = header_p.add_run(name + " | ")
+        name_run.font.size = Pt(14)
+        name_run.font.bold = True
+        name_run.font.name = 'Calibri'
+        name_run.font.color.rgb = RGBColor(0, 0, 0)  # Black color
+        
+        # Position (14pt, bold, blue)
+        pos_run = header_p.add_run(position)
+        pos_run.font.size = Pt(14)
+        pos_run.font.bold = True
+        pos_run.font.name = 'Calibri'
+        pos_run.font.color.rgb = RGBColor(91, 155, 213)  # Blue color
+        
+        header_p.paragraph_format.space_before = Pt(0)
+        header_p.paragraph_format.space_after = Pt(0)
         
         # Right cell: Logo
         right_cell = header_table.rows[0].cells[1]

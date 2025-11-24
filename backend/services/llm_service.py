@@ -2,6 +2,9 @@ import os
 from openai import OpenAI
 from typing import Dict, Optional
 import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class LLMService:
